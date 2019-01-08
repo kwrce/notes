@@ -63,7 +63,7 @@ public class UserController {
       factory-method="createService">
 </bean>
 <!-- 配置自动扫描的包 -->
-	<context:component-scan base-package="top.kwrcee"></context:component-scan>
+<context:component-scan base-package="top.kwrcee"></context:component-scan>
 ```
 
 ## 实例工厂：
@@ -92,14 +92,15 @@ public class UserServiceFactory {
         if(values.size()==0) {
         	return null;
         }
-        //根据session中的getLastAccessedTime 调用不同service
-        int num=0;
+        //获得随机数
+        int num=(int)(Math.random()*10000);
         //获取上下文中的session
-        Map<String, HttpSession> sessionMap=applicationContext.getBeansOfType(HttpSession.class);
+        //根据session中的getLastAccessedTime 调用不同service
+        //Map<String, HttpSession> sessionMap=applicationContext.getBeansOfType(HttpSession.class);
         //获取session中getLastAccessedTime
-        for (Map.Entry<String, HttpSession> entry : sessionMap.entrySet()) { 
-        	num=(int)(entry.getValue().getLastAccessedTime()&1);
-        }
+        //for (Map.Entry<String, HttpSession> entry : sessionMap.entrySet()) { 
+        //	num=(int)(entry.getValue().getLastAccessedTime()&1);
+        //}
         //不同的session 调用不同的service
     	num=num%values.size();
         System.out.println("调用service名称:"+keys.get(num));
@@ -147,6 +148,17 @@ public class ServiceLocator implements ApplicationContextAware {
 ##### 	2.创建实例工厂来根据上下文动态创建service，添加实例工厂方法createService，在方法中获取上下文，根据上下文获得UserService的所有实现类保存在map集合中，根据时间随机调用service
 
 ##### 	3.在xml文件中注入UserService
+
+## 问题：
+
+在工厂中调用使用上下文不能获得session,报空指针异常
+
+```xml
+ ·org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userController': Unsatisfied dependency expressed through field 'userService'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userService' defined in class path resource [springMVC.xml]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [top.kwrcee.service.UserService]: Factory method 'createService' threw exception; nested exception is java.lang.NullPointerException
+ ·org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean with name 'userService': Requested bean is currently in creation: Is there an unresolvable circular reference?
+```
+
+
 
 
 
