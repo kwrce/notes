@@ -146,7 +146,7 @@ public class ServiceLocator implements ApplicationContextAware {
 
 ##### 	2.创建实例工厂来根据上下文动态创建service，添加实例工厂方法createService，在方法中获取上下文，根据上下文获得UserService的所有实现类保存在map集合中，根据时间随机调用service
 
-##### ​	3.在xml文件中注入UserService
+##### 	3.在xml文件中注入UserService
 
 
 
