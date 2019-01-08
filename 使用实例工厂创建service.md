@@ -142,7 +142,7 @@ public class ServiceLocator implements ApplicationContextAware {
 
 ##### 	1.首先要想获取容器中接口的所有实现类必须先获取上下文，即实现ApplicationContextAware接口并重写setApplicationContext方法，将ApplicationContext对象保存在定位器中，
 
-注：定位器必须添加@Component或者在spring的配置文件中添加与之对应的<bean/>
+注：定位器必须添加@Component或者在spring的配置文件中添加与之对应的`<bean/>`
 
 ##### 	2.创建实例工厂来根据上下文动态创建service，添加实例工厂方法createService，在方法中获取上下文，根据上下文获得UserService的所有实现类保存在map集合中，根据时间随机调用service
 
